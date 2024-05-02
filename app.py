@@ -1,22 +1,26 @@
-from flask import Flask, render_template, request
+import streamlit as st
+import cv2
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 
-app = Flask(__name__)
+class VideoTransformer(VideoTransformerBase):
+    def transform(self, frame):
+        return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+def main():
+    st.title("Video Upload and Camera Access")
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    if 'file' not in request.files:
-        return "No file part"
-    
-    file = request.files['file']
+    # Option to upload video file
+    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov"])
 
-    if file.filename == '':
-        return "No selected file"
-    
-    return f"File {file.filename} uploaded successfully!"
+    if uploaded_file is not None:
+        # Display uploaded video
+        st.video(uploaded_file)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    # Option to access camera
+    use_camera = st.checkbox("Use camera")
+
+    if use_camera:
+        webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+
+if __name__ == "__main__":
+    main()
