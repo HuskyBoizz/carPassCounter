@@ -2,7 +2,6 @@ streamlit
 numpy
 opencv-contrib-python==4.5.5.62
 opencv-python
-streamlit_webrtc==1.21.6
+streamlit_webrtc
 opencv-python-headless
-cv2
 sys
