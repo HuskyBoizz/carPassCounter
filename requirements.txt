@@ -1,5 +1,6 @@
 streamlit
 numpy
 opencv-contrib-python==4.5.5.62
+opencv-python-headless
 opencv-python
 streamlit_webrtc
